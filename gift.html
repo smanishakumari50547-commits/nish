@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gift ideas | Birthday Party</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <nav class="nav" aria-label="Pages">
+      <a href="index.html">Invitation</a>
+      <a href="gift.html" aria-current="page">Gift ideas</a>
+    </nav>
+
+    <section class="card" aria-labelledby="gift-title">
+      <h2 id="gift-title">Gift ideas</h2>
+      <p>No pressure at all! If you'd like to bring something, here are a few things I'd love. Tap <strong>I'll bring this</strong> so two friends don't bring the same gift.</p>
+
+      <ul class="gifts" id="gifts">
+        <li data-id="book"><span class="emoji" aria-hidden="true">📚</span><span class="text">A good book<small>Story, comics or self-growth</small></span><button type="button">I'll bring this</button></li>
+        <li data-id="headphones"><span class="emoji" aria-hidden="true">🎧</span><span class="text">Headphones<small>Wired or wireless</small></span><button type="button">I'll bring this</button></li>
+        <li data-id="plant"><span class="emoji" aria-hidden="true">🪴</span><span class="text">Indoor plant<small>Low-care, like a money plant</small></span><button type="button">I'll bring this</button></li>
+        <li data-id="watch"><span class="emoji" aria-hidden="true">⌚</span><span class="text">Watch<small>Simple and stylish</small></span><button type="button">I'll bring this</button></li>
+        <li data-id="sweets"><span class="emoji" aria-hidden="true">🍫</span><span class="text">Chocolates &amp; sweets<small>Always welcome</small></span><button type="button">I'll bring this</button></li>
+        <li data-id="surprise"><span class="emoji" aria-hidden="true">🎁</span><span class="text">Surprise me!<small>Anything from the heart</small></span><button type="button">I'll bring this</button></li>
+      </ul>
+
+      <p class="note" id="note" aria-live="polite"></p>
+      <a class="btn" href="index.html">Back to invitation</a>
+    </section>
+
+    <footer>Thank you for making my day special.</footer>
+  </main>
+
+  <script>
+    // Saves your own choices on this device only
+    const KEY = "birthday-gifts";
+    let taken = [];
+    try { taken = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
+
+    const items = document.querySelectorAll("#gifts li");
+    const note = document.getElementById("note");
+
+    function render() {
+      items.forEach(li => {
+        const on = taken.includes(li.dataset.id);
+        li.classList.toggle("taken", on);
+        const btn = li.querySelector("button");
+        btn.textContent = on ? "Picked ✓" : "I'll bring this";
+        btn.setAttribute("aria-pressed", on);
+      });
+    }
+
+    items.forEach(li => {
+      li.querySelector("button").addEventListener("click", () => {
+        const id = li.dataset.id;
+        taken = taken.includes(id) ? taken.filter(x => x !== id) : [...taken, id];
+        try { localStorage.setItem(KEY, JSON.stringify(taken)); } catch (e) {}
+        note.textContent = taken.includes(id) ? "Great choice! See you at the party." : "Removed from your picks.";
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>

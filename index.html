@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>You're invited! | Birthday Party</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <nav class="nav" aria-label="Pages">
+      <a href="index.html" aria-current="page">Invitation</a>
+      <a href="gift.html">Gift ideas</a>
+    </nav>
+
+    <div class="ticket-wrap">
+      <section class="ticket" aria-labelledby="title">
+        <span class="stamp">Admit one friend</span>
+        <h1 id="title">Let's Party!</h1>
+        <h2 id="title">HAPPY BIRTHDAY NISHA</h2
+        <p class="lead">Join me to celebrate <strong>Your Name's</strong> birthday with cake, music and lots of fun.</p>
+
+        <!-- Change the date below: YYYY-MM-DDTHH:MM -->
+        <dl class="details" id="details" data-date="2026-10-14T18:00">
+          <div><dt>Date</dt><dd id="d-date">Sat, 14 oct 2026</dd></div>
+          <div><dt>Time</dt><dd id="d-time">6:00 PM</dd></div>
+          <div><dt>Place</dt><dd>Your Venue, Chennai</dd></div>
+          <div><dt>Dress code</dt><dd>Colourful &amp; comfy</dd></div>
+        </dl>
+
+        <div class="countdown" role="timer" aria-label="Time left until the party">
+          <div><strong id="c-d">0</strong><span>days</span></div>
+          <div><strong id="c-h">0</strong><span>hours</span></div>
+          <div><strong id="c-m">0</strong><span>minutes</span></div>
+          <div><strong id="c-s">0</strong><span>seconds</span></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="rsvp-title">
+      <h2 id="rsvp-title">Will you come?</h2>
+      <form id="rsvp">
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" required autocomplete="name">
+
+        <label for="guests">How many people are coming?</label>
+        <select id="guests" name="guests">
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+        </select>
+
+        <label id="reply-label">Your reply</label>
+        <div class="choice" role="radiogroup" aria-labelledby="reply-label">
+          <label><input type="radio" name="reply" value="Yes, I'll be there!" checked> Yes, I'm in!</label>
+          <label><input type="radio" name="reply" value="Sorry, I can't make it."> Can't make it</label>
+        </div>
+
+        <label for="msg">Message (optional)</label>
+        <textarea id="msg" name="msg" rows="2"></textarea>
+
+        <button class="btn" type="submit">Send reply on WhatsApp</button>
+        <p class="note" id="note" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="gift-title">
+      <h2 id="gift-title">Thinking of a gift?</h2>
+      <p>Your presence is the best gift. If you still want to bring something, see the ideas.</p>
+      <a class="btn" href="gift.html">See gift ideas</a>
+    </section>
+
+    <footer>Can't wait to see you there!</footer>
+  </main>
+
+  <script>
+    // ---- Settings: change these ----
+    const HOST_WHATSAPP = "919999999999"; // country code + number, no + or spaces
+
+    // ---- Date text and countdown ----
+    const details = document.getElementById("details");
+    const party = new Date(details.dataset.date);
+
+    document.getElementById("d-date").textContent =
+      party.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+    document.getElementById("d-time").textContent =
+      party.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
+
+    function tick() {
+      let diff = Math.max(0, party - new Date());
+      const d = Math.floor(diff / 864e5); diff %= 864e5;
+      const h = Math.floor(diff / 36e5);  diff %= 36e5;
+      const m = Math.floor(diff / 6e4);   diff %= 6e4;
+      const s = Math.floor(diff / 1e3);
+      document.getElementById("c-d").textContent = d;
+      document.getElementById("c-h").textContent = h;
+      document.getElementById("c-m").textContent = m;
+      document.getElementById("c-s").textContent = s;
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // ---- RSVP: opens WhatsApp with a ready message ----
+    document.getElementById("rsvp").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const text = `Hi! This is ${f.get("name")}. ${f.get("reply")} Guests: ${f.get("guests")}.` +
+                   (f.get("msg") ? ` ${f.get("msg")}` : "");
+      window.open(`https://wa.me/${HOST_WHATSAPP}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+      document.getElementById("note").textContent = "Thanks! Your reply is ready in WhatsApp. Just press send.";
+    });
+  </script>
+</body>
+</html>

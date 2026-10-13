@@ -1,0 +1,179 @@
+/* ===== Tokens ===== */
+:root {
+  --ink: #1b1f5e;
+  --pink: #ff4f8b;
+  --sun: #ffd23f;
+  --mint: #7fe0c3;
+  --paper: #fffdf9;
+  --bg: #efe9ff;
+  --font-display: "Bagel Fat One", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--sun) 2px, transparent 2.5px),
+                    radial-gradient(var(--pink) 2px, transparent 2.5px);
+  background-size: 70px 70px, 110px 110px;
+  background-position: 0 0, 35px 50px;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+/* ===== Layout ===== */
+.wrap { max-width: 760px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+
+.nav { display: flex; gap: .5rem; justify-content: center; margin-bottom: 1.5rem; }
+.nav a {
+  padding: .45rem 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  font-weight: 800;
+  text-decoration: none;
+}
+.nav a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+.nav a:hover { background: var(--sun); color: var(--ink); }
+
+/* ===== Ticket (the one bold element) ===== */
+.ticket {
+  position: relative;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--ink);
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+  /* punched notches on both sides */
+  -webkit-mask: radial-gradient(circle 14px at 0 62%, #0000 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 14px at 100% 62%, #0000 98%, #000) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 14px at 0 62%, #0000 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 14px at 100% 62%, #0000 98%, #000) right / 51% 100% no-repeat;
+}
+.ticket-wrap { filter: drop-shadow(8px 8px 0 var(--ink)); }
+.ticket-wrap .ticket { box-shadow: none; border-color: transparent; }
+.ticket-wrap .ticket::before {
+  content: ""; position: absolute; inset: 0; border: 3px solid var(--ink);
+  border-radius: 22px; pointer-events: none;
+}
+
+.stamp {
+  display: inline-block;
+  transform: rotate(-4deg);
+  padding: .25rem 1rem;
+  background: var(--sun);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+h1 {
+  margin: .9rem 0 .2rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 11vw, 4.8rem);
+  line-height: 1;
+  color: var(--pink);
+  text-shadow: 3px 3px 0 var(--ink);
+}
+h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; margin: 0 0 .5rem; }
+.lead { margin: .5rem auto 0; max-width: 34ch; font-size: 1.2rem; font-weight: 700; }
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: .75rem;
+  margin: 1.75rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 3px dashed var(--ink);
+  text-align: left;
+}
+.details div { padding: .6rem .9rem; background: var(--bg); border-radius: 12px; }
+.details dt { font-size: .85rem; font-weight: 800; opacity: .7; }
+.details dd { margin: 0; font-weight: 800; font-size: 1.1rem; }
+
+/* ===== Countdown ===== */
+.countdown { display: flex; justify-content: center; gap: .6rem; margin-top: 1.5rem; }
+.countdown div {
+  min-width: 4.4rem; padding: .5rem .4rem;
+  background: var(--ink); color: var(--paper); border-radius: 12px;
+}
+.countdown strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.8rem; line-height: 1.1; }
+.countdown span { font-size: .8rem; }
+
+/* ===== Cards, forms, buttons ===== */
+.card {
+  margin-top: 2rem; padding: 1.5rem;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 var(--mint);
+}
+
+label { display: block; margin-top: 1rem; font-weight: 800; }
+input, select, textarea {
+  width: 100%; margin-top: .3rem; padding: .7rem .9rem;
+  font: inherit; color: var(--ink);
+  background: #fff; border: 2px solid var(--ink); border-radius: 10px;
+}
+
+.choice { display: flex; gap: .6rem; margin-top: .4rem; }
+.choice label {
+  flex: 1; margin: 0; padding: .6rem; text-align: center; cursor: pointer;
+  border: 2px solid var(--ink); border-radius: 10px; background: #fff;
+}
+.choice input { position: absolute; opacity: 0; width: 0; }
+.choice label:has(input:checked) { background: var(--sun); box-shadow: 3px 3px 0 var(--ink); }
+.choice label:has(input:focus-visible) { outline: 3px solid var(--pink); }
+
+.btn {
+  display: inline-block; margin-top: 1.25rem; padding: .8rem 1.6rem;
+  font: inherit; font-weight: 800; color: var(--paper); text-decoration: none; cursor: pointer;
+  background: var(--pink); border: 3px solid var(--ink); border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .12s, box-shadow .12s;
+}
+.btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+
+.note { margin-top: .8rem; font-weight: 700; min-height: 1.5em; }
+
+/* ===== Gift list ===== */
+.gifts { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .75rem; }
+.gifts li {
+  display: flex; align-items: center; gap: 1rem; padding: .8rem 1rem;
+  background: var(--bg); border: 2px solid var(--ink); border-radius: 14px;
+}
+.gifts .emoji { font-size: 2rem; }
+.gifts .text { flex: 1; }
+.gifts .text small { display: block; opacity: .75; }
+.gifts button {
+  padding: .45rem 1rem; font: inherit; font-weight: 800; cursor: pointer;
+  background: var(--paper); color: var(--ink); border: 2px solid var(--ink); border-radius: 999px;
+}
+.gifts button:hover { background: var(--sun); }
+.gifts li.taken { background: var(--mint); }
+.gifts li.taken button { background: var(--ink); color: var(--paper); }
+
+footer { margin-top: 2rem; text-align: center; font-weight: 700; }
+
+/* ===== Small screens & motion ===== */
+@media (max-width: 480px) {
+  .gifts li { flex-wrap: wrap; }
+  .gifts button { width: 100%; }
+  .countdown div { min-width: 3.6rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stamp { animation: wiggle 2.4s ease-in-out infinite; }
+}
+@keyframes wiggle { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(2deg); } }
